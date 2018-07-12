@@ -37,22 +37,20 @@ class App(QWidget):
         self.layout = QVBoxLayout()
 
         # Reservation Station
-        l1 = QLabel("Reservation Station")
-        l1.setAlignment(Qt.AlignCenter)
-        self.layout.addWidget(l1)
+        self.l1 = QLabel("Reservation Station")
+        self.l1.setAlignment(Qt.AlignCenter)
+        self.layout.addWidget(self.l1)
         self.layout.addStretch()
         self.layout.addWidget(self.ReservationStatusTable)
 
-
-        l2 = QLabel("                                                                               Instructions")
-        self.layout.addWidget(l2)
+        self.l2 = QLabel("                                                                               Instructions")
+        self.layout.addWidget(self.l2)
         self.layout.addStretch()
         self.layout.addWidget(self.InstructionStatusTable)
-
         
-        l3 = QLabel("Registers")
-        l3.setAlignment(Qt.AlignCenter)
-        self.layout.addWidget(l3)
+        self.l3 = QLabel("Registers")
+        self.l3.setAlignment(Qt.AlignCenter)
+        self.layout.addWidget(self.l3)
         self.layout.addStretch()  
         self.layout.addWidget(self.FirstRegisterStatusTable)
         self.layout.addWidget(self.SecondRegisterStatusTable)
@@ -79,7 +77,8 @@ class App(QWidget):
     @pyqtSlot()
     def on_click(self):
         self.presenter.update()
-        [inst_info,reserv_info,reg_info]  = self.presenter.get_status()
+        [cycle, inst_info,reserv_info,reg_info]  = self.presenter.get_status()
+        self.l1.setText("Reservation Station - Cycle " + str(cycle))
         self.updateInstructionStatusTable(inst_info)
         self.updateReservationStatusTable(reserv_info)
         self.updateFirstRegisterStatusTable(reg_info)

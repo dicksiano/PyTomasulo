@@ -17,13 +17,14 @@ class Tomasulo:
         self.is_mem_ready = True
 
     def update(self):
-        self.cycle += 1
-        self.write()
-        self.execute()
-        self.issue()
+        if not self.has_finished():
+            self.cycle += 1
+            self.write()
+            self.execute()
+            self.issue()
 
     def get_status(self):
-        return [ self.instruction_set.get_status(), self.reservation.get_status(), self.registers.get_status() ]
+        return [ self.cycle, self.instruction_set.get_status(), self.reservation.get_status(), self.registers.get_status() ]
 
     # Takes the next instruction (one per cycle) and Issue it if possible. Depends of what execution units are available   
     def issue(self):
@@ -169,4 +170,7 @@ class Tomasulo:
 
     def solve_jtype(self, inst):
         self.instruction_set.update_PC(inst.target_adress)
+
+    def has_finished(self):
+        return all(i.get_state() == 'finished' for i in self.instruction_set.all)
     
