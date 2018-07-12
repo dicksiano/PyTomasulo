@@ -76,7 +76,7 @@ class IType_Instruction(Instruction):
 		# Lw,Sw takes 4 cycle to execute and Addi/Beq/Ble/Bne takes 1
 		if op == 'Lw' or op == 'Sw':
 			self.cycles_execute = 4 
-			self.name = op + ' ' + rt + ',' + rs + '(' + immediate + ')'
+			self.name = op + ' ' + rt + ',' + immediate + '(' + rs + ')'
 		else:
 			self.cycles_execute = 1
 			self.name = op + ' ' + rt + ',' + rs + ',' + immediate

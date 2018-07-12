@@ -77,8 +77,8 @@ class App(QWidget):
     @pyqtSlot()
     def on_click(self):
         self.presenter.update()
-        [cycle, inst_info,reserv_info,reg_info]  = self.presenter.get_status()
-        self.l1.setText("Reservation Station - Cycle " + str(cycle))
+        [cycle, issued_inst, inst_info,reserv_info,reg_info]  = self.presenter.get_status()
+        self.l1.setText("Reservation Station - Cycle " + str(cycle) + " - Issued " + str(issued_inst))
         self.updateInstructionStatusTable(inst_info)
         self.updateReservationStatusTable(reserv_info)
         self.updateFirstRegisterStatusTable(reg_info)

@@ -15,6 +15,7 @@ class Tomasulo:
         self.is_add_ready = True
         self.is_mult_ready = True
         self.is_mem_ready = True
+        self.is_CDB_ready = True
         # Have to wait branch operations
         self.is_waiting_branch = False
 
@@ -26,7 +27,7 @@ class Tomasulo:
             self.issue()
 
     def get_status(self):
-        return [ self.cycle, self.instruction_set.get_status(), self.reservation.get_status(), self.registers.get_status() ]
+        return [ self.cycle, self.issued_instructions, self.instruction_set.get_status(), self.reservation.get_status(), self.registers.get_status() ]
 
     # Takes the next instruction (one per cycle) and Issue it if possible. Depends of what execution units are available   
     def issue(self):
@@ -155,7 +156,7 @@ class Tomasulo:
         elif inst.op == 'Ble':
             self.is_waiting_branch = False # Finish of branch op
             if inst.exec_unit.Vj <= inst.exec_unit.Vk:
-                self.instruction_set.update_PC(1 + inst.immediate)
+                self.instruction_set.set_PC(inst.immediate)
         elif inst.op == 'Bne':
             self.is_waiting_branch = False # Finish of branch op
             if inst.exec_unit.Vj != inst.exec_unit.Vk:
