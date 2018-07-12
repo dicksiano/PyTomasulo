@@ -15,6 +15,8 @@ class Tomasulo:
         self.is_add_ready = True
         self.is_mult_ready = True
         self.is_mem_ready = True
+        # Have to wait branch operations
+        self.is_waiting_branch = False
 
     def update(self):
         if not self.has_finished():
@@ -28,7 +30,7 @@ class Tomasulo:
 
     # Takes the next instruction (one per cycle) and Issue it if possible. Depends of what execution units are available   
     def issue(self):
-        if not self.instruction_set.is_finished():
+        if not self.instruction_set.is_finished() and not self.is_waiting_branch:
             current_inst = self.instruction_set.get_next_instruction() # Take the instruction that is pointed by PC
 
             if self.reservation.is_unit_available(current_inst.unit_type): # Check if there is execution unit available
@@ -40,6 +42,9 @@ class Tomasulo:
                 exec_unit.Op = current_inst.name # Set who is occuping the exec unit
 
                 self.setup_exec(current_inst) # Setup: update Vj, Vk. If there are dependencies, then use Qj, Qk 
+                
+                if current_inst.op == 'Beq' or current_inst.op == 'Ble' or current_inst.op == 'Bne': # Branch operations
+                    self.is_waiting_branch = True
 
     # Take all issued instructions and try to execute them
     def execute(self):
@@ -144,12 +149,15 @@ class Tomasulo:
 
     def solve_itype(self, inst):        
         if inst.op == 'Beq':
+            self.is_waiting_branch = False # Finish of branch op
             if inst.exec_unit.Vj == inst.exec_unit.Vk:
                 self.instruction_set.update_PC(1 + inst.immediate)
         elif inst.op == 'Ble':
+            self.is_waiting_branch = False # Finish of branch op
             if inst.exec_unit.Vj <= inst.exec_unit.Vk:
                 self.instruction_set.update_PC(1 + inst.immediate)
         elif inst.op == 'Bne':
+            self.is_waiting_branch = False # Finish of branch op
             if inst.exec_unit.Vj != inst.exec_unit.Vk:
                 self.instruction_set.update_PC(1 + inst.immediate)
         elif inst.op == 'Sw':
@@ -169,7 +177,7 @@ class Tomasulo:
             raise Exception("Unknown itype op: *" + inst.op + '*')
 
     def solve_jtype(self, inst):
-        self.instruction_set.update_PC(inst.target_adress)
+        self.instruction_set.set_PC(inst.target_adress)
 
     def has_finished(self):
         return all(i.get_state() == 'finished' for i in self.instruction_set.all)

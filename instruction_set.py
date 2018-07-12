@@ -11,6 +11,9 @@ class Instruction_Set:
     def update_PC(self, offset=1):
         self.program_counter += int(offset)
 
+    def set_PC(self, target):
+        self.program_counter = int(target)
+
     def print_status(self):
         for i in self.all:
             i.print_status()
