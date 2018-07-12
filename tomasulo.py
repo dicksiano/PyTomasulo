@@ -17,6 +17,13 @@ class Tomasulo:
         self.execute()
         self.issue()
 
+    def get_status(self):
+        return [
+                self.instruction_set.get_status(),
+                self.reservation.get_status(),
+                self.registers.get_status()
+                ]
+
     # Takes the next instruction (one per cycle) and Issue it if possible. Depends of what execution units are available   
     def issue(self):
         if not self.instruction_set.is_finished():

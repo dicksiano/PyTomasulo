@@ -18,5 +18,9 @@ class Instruction_Set:
     def is_finished(self):
         return self.program_counter >= len(self.all)
 
-
+    def get_status(self):
+        status = []
+        for i in self.all:
+            status.append(i.get_status())
+        return status
 

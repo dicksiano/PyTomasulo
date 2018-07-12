@@ -28,6 +28,9 @@ class Execution_Unit:
                 self.Qk = 'none'
                 self.Vk = result
 
+    def get_status(self):
+        return [self.name, self.Busy, self.Op, self.Vj, self.Vk, self.Qj, self.Qk, self.A]
+
     def print_status(self):
         print("%7s: " %self.name + "%6s" %self.Busy + ' ' + "%20s" %self.Op + ' ' + "%6s" %self.Vj + ' ' + "%6s" %self.Vk + ' ' + "%6s" %self.Qj + ' ' + "%6s" %self.Qk + ' ' + "%6s" %self.A)
 
@@ -81,6 +84,17 @@ class Reservation_Status:
 
     def is_mul_available(self):
         return ((not self.mult0.Busy) or (not self.mult1.Busy))
+
+    def get_status(self):
+        return [
+                self.load0.get_status(), 
+                self.load1.get_status(),
+                self.add0.get_status(),
+                self.add1.get_status(),
+                self.add2.get_status(),
+                self.mult0.get_status(),
+                self.mult1.get_status()
+                ]
 
     def print_status(self):
         self.load0.print_status()

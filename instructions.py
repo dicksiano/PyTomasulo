@@ -44,6 +44,9 @@ class Instruction:
 	def is_ready_to_exec(self):
 		return self.exec_unit.Vj != 'none' and self.exec_unit.Vk != 'none'
 
+	def get_status(self):
+		return [self.name, self.state == 'issue', self.state == 'exec', self.state == 'write', self.state == 'finished']
+		
 	def print_status(self):
 		print("%20s" %self.name + ' ' + "%6s" %str(self.state == 'issue') + ' ' + "%6s" %str(self.state == 'exec') + ' ' + "%6s" %str(self.state == 'write') + ' ' + "%6s" %str(self.state == 'finished'))
 

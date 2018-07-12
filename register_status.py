@@ -9,6 +9,12 @@ class Register_Status:
         for i in range(0,32):
             self.reg['R' + str(i)] = Register(0, True)
 
+    def get_status(self):
+        status = []
+        for i in range(0,32):            
+            status.append(self.reg['R' + str(i)].value)
+        return status
+
     def print_status(self):
         for i in range(0,32):
             print('R' + str(i) + ": " + str(self.reg['R' + str(i)].value), end=" ")
