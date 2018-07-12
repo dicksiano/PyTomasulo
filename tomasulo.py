@@ -117,6 +117,14 @@ class Tomasulo:
                     inst.exec_unit.Qk = self.registers.get_value(inst.rt) # Waiting for dependencies
             else:
                 inst.exec_unit.Vk = inst.immediate
+
+            if inst.type == 'rtype':
+                self.registers.set_param(inst.rd, inst.exec_unit.name, False) # Lock rd register. It can be overwriten by the next instructions
+                #inst.execute()
+            elif inst.type == 'itype':
+                if inst.op == 'Addi' or inst.op == 'Lw': # Addi and Lw use rt to storage the result. All other itype op don't
+                    self.registers.set_param(inst.rt, inst.exec_unit.name, False)  # Lock rt register. It can be overwriten by the next instructions
+                #inst.execute()
     
     def render(self):
         print('\nCycle: ' + str(self.cycle))
@@ -152,6 +160,7 @@ class Tomasulo:
         if inst.op == 'Beq':
             self.is_waiting_branch = False # Finish of branch op
             if inst.exec_unit.Vj == inst.exec_unit.Vk:
+                print(self.instruction_set.program_counter)
                 self.instruction_set.update_PC(1 + inst.immediate)
         elif inst.op == 'Ble':
             self.is_waiting_branch = False # Finish of branch op

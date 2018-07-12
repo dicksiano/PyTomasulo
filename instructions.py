@@ -81,6 +81,9 @@ class IType_Instruction(Instruction):
 			self.cycles_execute = 1
 			self.name = op + ' ' + rt + ',' + rs + ',' + immediate
 
+			if op == 'Ble': # Ble breaks the pattern
+				self.name = op + ' ' + rs + ',' + rt + ',' + immediate
+
 class JType_Instruction(Instruction):
 	def __init__(self, opcode,target_adress):
 		Instruction.__init__(self, opcode)
