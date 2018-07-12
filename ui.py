@@ -17,6 +17,7 @@ class App(QWidget):
         self.top = 0
         self.width = 1200
         self.height = 800
+        self.count = 0
 
         self.initUI()      
         fileName = self.openFileNameDialog()
@@ -34,8 +35,25 @@ class App(QWidget):
 
         # Add box layout, add tables to box layout and add box layout to widget
         self.layout = QVBoxLayout()
+
+        # Reservation Station
+        l1 = QLabel("Reservation Station")
+        l1.setAlignment(Qt.AlignCenter)
+        self.layout.addWidget(l1)
+        self.layout.addStretch()
         self.layout.addWidget(self.ReservationStatusTable)
-        self.layout.addWidget(self.InstructionStatusTable)  
+
+
+        l2 = QLabel("                                                                               Instructions")
+        self.layout.addWidget(l2)
+        self.layout.addStretch()
+        self.layout.addWidget(self.InstructionStatusTable)
+
+        
+        l3 = QLabel("Registers")
+        l3.setAlignment(Qt.AlignCenter)
+        self.layout.addWidget(l3)
+        self.layout.addStretch()  
         self.layout.addWidget(self.FirstRegisterStatusTable)
         self.layout.addWidget(self.SecondRegisterStatusTable)
         self.layout.addWidget(self.playButton)
@@ -205,7 +223,7 @@ class App(QWidget):
         self.FirstRegisterStatusTable = QTableWidget()
         self.FirstRegisterStatusTable.setRowCount(1)
         self.FirstRegisterStatusTable.setColumnCount(17)
-        self.FirstRegisterStatusTable.setFixedSize(1200,69)
+        self.FirstRegisterStatusTable.setFixedSize(1200,50)
 
         self.FirstRegisterStatusTable.setColumnWidth(0,81)
         for i in range(1,33):
@@ -227,7 +245,7 @@ class App(QWidget):
         self.SecondRegisterStatusTable = QTableWidget()
         self.SecondRegisterStatusTable.setRowCount(1)
         self.SecondRegisterStatusTable.setColumnCount(17)
-        self.SecondRegisterStatusTable.setFixedSize(1200,69)
+        self.SecondRegisterStatusTable.setFixedSize(1200,50)
 
         self.SecondRegisterStatusTable.setColumnWidth(0,81)
         for i in range(1,33):
@@ -235,8 +253,8 @@ class App(QWidget):
 
         # Set headings
         self.SecondRegisterStatusTable.setHorizontalHeaderLabels([
-                            "Register", "R16", "R17", "R18", "R19", 
-                            "R20", "R21", "R22", "R23", "R24", "R25", "R26", "R27", "R28", "R29", 
+                            "Register", "R16", "R17", "R18", "R19", "R20", "R21", 
+                            "R22", "R23", "R24", "R25", "R26", "R27", "R28", "R29", 
                             "R30", "R31"])
         item = QTableWidgetItem("Qi")
         item.setTextAlignment(Qt.AlignCenter)

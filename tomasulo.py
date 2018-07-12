@@ -102,14 +102,12 @@ class Tomasulo:
             inst.exec_unit.Vj = self.registers.get_value(inst.rs) # Put register value at Vj
         else:
             inst.exec_unit.Qj = self.registers.get_value(inst.rs) # Waiting for dependencies
-            print("Qj: " + inst.exec_unit.Qj)
 
         if inst.op != 'Addi' and inst.op != 'Lw': # Add, Sub, Mul, Beq, Ble, Bne, Sw also need rt
             if self.registers.is_ready(inst.rt):
                 inst.exec_unit.Vk = self.registers.get_value(inst.rt) # Put register value at Vk
             else:
                 inst.exec_unit.Qk = self.registers.get_value(inst.rt) # Waiting for dependencies
-                print("Qk: " + inst.exec_unit.Qk + "\n\n\n\n\n\n\n")
         else:
             inst.exec_unit.Vk = inst.immediate
     

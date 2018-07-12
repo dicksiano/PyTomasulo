@@ -14,7 +14,7 @@ class Presenter:
 
     def update(self):
         self.tomasulo_impl.update()
-        self.tomasulo_impl.render()
+        #self.tomasulo_impl.render()
     
     def get_status(self):
         return self.tomasulo_impl.get_status()
