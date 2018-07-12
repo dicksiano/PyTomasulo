@@ -98,19 +98,19 @@ class Tomasulo:
         if inst.op == 'nop' or inst.type == 'jtype':
             inst.exec_unit.Vj = '-'
             inst.exec_unit.Vk = '-'
-
-        if self.registers.is_ready(inst.rs):
-            inst.exec_unit.Vj = self.registers.get_value(inst.rs) # Put register value at Vj
         else:
-            inst.exec_unit.Qj = self.registers.get_value(inst.rs) # Waiting for dependencies
-
-        if inst.op != 'Addi' and inst.op != 'Lw': # Add, Sub, Mul, Beq, Ble, Bne, Sw also need rt
-            if self.registers.is_ready(inst.rt):
-                inst.exec_unit.Vk = self.registers.get_value(inst.rt) # Put register value at Vk
+            if self.registers.is_ready(inst.rs):
+                inst.exec_unit.Vj = self.registers.get_value(inst.rs) # Put register value at Vj
             else:
-                inst.exec_unit.Qk = self.registers.get_value(inst.rt) # Waiting for dependencies
-        else:
-            inst.exec_unit.Vk = inst.immediate
+                inst.exec_unit.Qj = self.registers.get_value(inst.rs) # Waiting for dependencies
+
+            if inst.op != 'Addi' and inst.op != 'Lw': # Add, Sub, Mul, Beq, Ble, Bne, Sw also need rt
+                if self.registers.is_ready(inst.rt):
+                    inst.exec_unit.Vk = self.registers.get_value(inst.rt) # Put register value at Vk
+                else:
+                    inst.exec_unit.Qk = self.registers.get_value(inst.rt) # Waiting for dependencies
+            else:
+                inst.exec_unit.Vk = inst.immediate
     
     def render(self):
         print('\nCycle: ' + str(self.cycle))

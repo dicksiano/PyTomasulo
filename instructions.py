@@ -9,7 +9,7 @@ class Instruction:
 		self.exec_unit = 'none'
 		self.cycles_execute = 0
 
-		if op in ['Add', 'Sub', 'Addi', 'Beq', 'Ble', 'Bne']:
+		if op in ['Add', 'Sub', 'Addi', 'Beq', 'Ble', 'Bne', 'Jmp']:
 			self.unit_type = 'Add'
 		elif op in ['Lw', 'Sw']:
 			self.unit_type = 'Mem'
