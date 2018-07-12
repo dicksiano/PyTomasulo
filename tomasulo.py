@@ -52,14 +52,13 @@ class Tomasulo:
         for i in self.instruction_set.all:
             if i.get_state() == 'issue':
                 if i.is_ready_to_exec(): # Dependencies have finished their execution
+                    i.execute() 
+                    
                     if i.unit_type == 'Add' and self.is_add_ready:
-                        self.start_execution(i)
                         self.is_add_ready = False
                     if i.unit_type == 'Mul' and self.is_mult_ready:
-                        self.start_execution(i)
                         self.is_mult_ready = False
                     if i.unit_type == 'Mem' and self.is_mem_ready:
-                        self.start_execution(i)
                         self.is_mem_ready = False
 
             elif i.get_state() == 'exec':
@@ -87,18 +86,6 @@ class Tomasulo:
                     self.solve_itype(i)
                 elif i.type == 'jtype':
                     self.solve_jtype(i)
-
-    def start_execution(self, inst):
-        if inst.op == 'Nop' or inst.type == 'jtype': # Nop, Jmp doesn't need any register
-            inst.execute()
-        else:
-            if inst.type == 'rtype':
-                self.registers.set_param(inst.rd, inst.exec_unit.name, False) # Lock rd register. It can be overwriten by the next instructions
-                inst.execute()
-            elif inst.type == 'itype':
-                if inst.op == 'Addi' or inst.op == 'Lw': # Addi and Lw use rt to storage the result. All other itype op don't
-                    self.registers.set_param(inst.rt, inst.exec_unit.name, False)  # Lock rt register. It can be overwriten by the next instructions
-                inst.execute()
 
     def setup_exec(self, inst):        
         if inst.op == 'nop' or inst.type == 'jtype':
