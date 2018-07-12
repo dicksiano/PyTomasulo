@@ -22,6 +22,8 @@ class Tomasulo:
     def update(self):
         if not self.has_finished():
             self.cycle += 1
+            print(self.cycle)
+            self.finalize()
             self.write()
             self.execute()
             self.issue()
@@ -33,7 +35,7 @@ class Tomasulo:
     def issue(self):
         if not self.instruction_set.is_finished() and not self.is_waiting_branch:
             current_inst = self.instruction_set.get_next_instruction() # Take the instruction that is pointed by PC
-
+            
             if self.reservation.is_unit_available(current_inst.unit_type): # Check if there is execution unit available
                 self.instruction_set.update_PC() # PC = PC + 1. Only updates PC if there is an available exec unit         
                 self.issued_instructions += 1
@@ -52,14 +54,16 @@ class Tomasulo:
         for i in self.instruction_set.all:
             if i.get_state() == 'issue':
                 if i.is_ready_to_exec(): # Dependencies have finished their execution
-                    i.execute() 
 
                     if i.unit_type == 'Add' and self.is_add_ready:
                         self.is_add_ready = False
+                        i.execute() 
                     if i.unit_type == 'Mul' and self.is_mult_ready:
                         self.is_mult_ready = False
+                        i.execute() 
                     if i.unit_type == 'Mem' and self.is_mem_ready:
                         self.is_mem_ready = False
+                        i.execute() 
 
             elif i.get_state() == 'exec':
                 i.execute()          
@@ -67,13 +71,12 @@ class Tomasulo:
     # Take all instructions in execution. If the execution has finished, then write it
     def write(self):
         for i in self.instruction_set.all:
-            if i.get_state() == 'write':
-                self.is_CDB_ready = True
-                i.exec_unit.clear() # Free exec unit to others instructions be processed
-                i.finalize()
-            elif i.get_state() == 'exec' and i.cycles_execute <= 0:
-                if self.is_CDB_ready or i.should_write():
+            if i.get_state() == 'exec' and i.cycles_execute <= 0:
+                if self.is_CDB_ready or (not i.should_write()):
                     i.write()
+
+                    if i.should_write():
+                        self.is_CDB_ready = False # Set CDB busy
 
                     if i.unit_type == 'Add':
                         self.is_add_ready = True
@@ -88,6 +91,14 @@ class Tomasulo:
                         self.solve_itype(i)
                     elif i.type == 'jtype':
                         self.solve_jtype(i)
+
+    def finalize(self):
+        for i in self.instruction_set.all:
+            if i.get_state() == 'write':
+                if i.should_write():
+                    self.is_CDB_ready = True # Set CDB free
+                i.exec_unit.clear() # Free exec unit to others instructions be processed
+                i.finalize()
 
     def setup_exec(self, inst):        
         if inst.op == 'nop' or inst.type == 'jtype':

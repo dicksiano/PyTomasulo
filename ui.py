@@ -61,6 +61,8 @@ class App(QWidget):
         # Show widget
         self.show()
 
+        self.f = open('log.txt', 'w')
+
     def openFileNameDialog(self):    
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
@@ -80,6 +82,8 @@ class App(QWidget):
     def on_click(self):
         self.presenter.update()
         [cycle, issued_inst, inst_info,reserv_info,reg_info]  = self.presenter.get_status()
+        log = str(cycle) + ' ' + str(issued_inst) + ' ' + str(cycle/issued_inst) + '\n' 
+        self.f.write(log)
         self.l1.setText("Reservation Station - Cycle " + str(cycle) + " - Issued " + str(issued_inst))
         self.updateInstructionStatusTable(inst_info)
         self.updateReservationStatusTable(reserv_info)
@@ -98,7 +102,9 @@ class App(QWidget):
     def on_click_forward(self):
         for i in range(0,1000):
             self.presenter.update()
-        [cycle, issued_inst, inst_info,reserv_info,reg_info]  = self.presenter.get_status()
+            [cycle, issued_inst, inst_info,reserv_info,reg_info]  = self.presenter.get_status()
+            log = str(cycle) + ' ' + str(issued_inst) + ' ' + str(cycle/issued_inst) + '\n'
+            self.f.write(log)
         self.l1.setText("Reservation Station - Cycle " + str(cycle) + " - Issued " + str(issued_inst))
         self.updateInstructionStatusTable(inst_info)
         self.updateReservationStatusTable(reserv_info)

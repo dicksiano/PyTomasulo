@@ -8,6 +8,7 @@ class Instruction:
 		self.type = 'none'
 		self.exec_unit = 'none'
 		self.cycles_execute = 0
+		self.cycles_total = 0
 		self.op = op
 
 		if op in ['Add', 'Sub', 'Addi', 'Beq', 'Ble', 'Bne', 'Jmp']:
@@ -24,6 +25,9 @@ class Instruction:
 		self.exec_unit = exec_unit
 
 	def execute(self):
+		if self.state == 'issue':
+			self.cycles_execute = self.cycles_total
+		print('Exec ' + self.name + ': ' + str(self.cycles_execute))
 		self.state = 'exec'
 		self.cycles_execute -= 1 # decrease the number of cycles to exec
 
@@ -68,6 +72,8 @@ class RType_Instruction(Instruction):
 		else:
 			self.cycles_execute = 1
 
+		self.cycles_total = self.cycles_execute
+
 class IType_Instruction(Instruction):
 	def __init__(self, op, rs,rt,immediate):
 		Instruction.__init__(self, op)
@@ -88,6 +94,8 @@ class IType_Instruction(Instruction):
 			if op == 'Ble': # Ble breaks the pattern
 				self.name = op + ' ' + rs + ',' + rt + ',' + immediate
 
+		self.cycles_total = self.cycles_execute
+
 class JType_Instruction(Instruction):
 	def __init__(self, opcode,target_adress):
 		Instruction.__init__(self, opcode)
@@ -95,5 +103,5 @@ class JType_Instruction(Instruction):
 		self.op = opcode
 		self.target_adress = target_adress
 		self.name = opcode + ' ' + target_adress
-		self.cycles_execute = 1
+		self.cycles_execute = self.cycles_total = 1
 		
