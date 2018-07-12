@@ -15,5 +15,8 @@ class Instruction_Set:
         for i in self.all:
             i.print_status()
 
+    def is_finished(self):
+        return self.program_counter >= len(self.all)
+
 
 

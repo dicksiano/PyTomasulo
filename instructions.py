@@ -30,7 +30,7 @@ class Instruction:
 		self.state = 'write'
 	
 	def finalize(self):
-		self.state = 'finalized'
+		self.state = 'finished'
 		
 	def get_state(self):
 		return self.state
@@ -45,7 +45,7 @@ class Instruction:
 		return self.exec_unit.Vj != 'none' and self.exec_unit.Vk != 'none'
 
 	def print_status(self):
-		print("%20s" %self.name + ' ' + "%6s" %str(self.state == 'issue') + ' ' + "%6s" %str(self.state == 'exec') + ' ' + "%6s" %str(self.state == 'write'))
+		print("%20s" %self.name + ' ' + "%6s" %str(self.state == 'issue') + ' ' + "%6s" %str(self.state == 'exec') + ' ' + "%6s" %str(self.state == 'write') + ' ' + "%6s" %str(self.state == 'finished'))
 
 
 class RType_Instruction(Instruction):

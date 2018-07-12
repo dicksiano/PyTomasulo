@@ -19,15 +19,16 @@ class Tomasulo:
 
     # Takes the next instruction (one per cycle) and Issue it if possible. Depends of what execution units are available   
     def issue(self):
-        current_inst = self.instruction_set.get_next_instruction() # Take the instruction that is pointed by PC
+        if not self.instruction_set.is_finished():
+            current_inst = self.instruction_set.get_next_instruction() # Take the instruction that is pointed by PC
 
-        if self.reservation.is_unit_available(current_inst.unit_type): # Check if there is execution unit available
-            self.instruction_set.update_PC() # PC = PC + 1           
+            if self.reservation.is_unit_available(current_inst.unit_type): # Check if there is execution unit available
+                self.instruction_set.update_PC() # PC = PC + 1           
 
-            exec_unit = self.reservation.get_exec_unit(current_inst.unit_type) # Get the available exec unit
-            current_inst.issue(exec_unit) # Instruction receive status 'issue' 
-            exec_unit.Busy = True # Exec unit will be busy until process this instruction
-            exec_unit.Op = current_inst.name 
+                exec_unit = self.reservation.get_exec_unit(current_inst.unit_type) # Get the available exec unit
+                current_inst.issue(exec_unit) # Instruction receive status 'issue' 
+                exec_unit.Busy = True # Exec unit will be busy until process this instruction
+                exec_unit.Op = current_inst.name 
 
     # Take all issued instructions and try to execute them
     def execute(self):
