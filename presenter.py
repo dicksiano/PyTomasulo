@@ -6,9 +6,9 @@ import instruction_set
 import tomasulo
 
 class Presenter:
-    def __init__(self):
+    def __init__(self, fileName):
         self.play = False
-        input_inst = utils.read_input("test.txt") # Read input
+        input_inst = utils.read_input(fileName) # Read input
         inst_set = instruction_set.Instruction_Set(input_inst)
         self.tomasulo_impl = tomasulo.Tomasulo(inst_set)
 

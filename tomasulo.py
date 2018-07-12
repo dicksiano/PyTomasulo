@@ -102,12 +102,14 @@ class Tomasulo:
             inst.exec_unit.Vj = self.registers.get_value(inst.rs) # Put register value at Vj
         else:
             inst.exec_unit.Qj = self.registers.get_value(inst.rs) # Waiting for dependencies
+            print("Qj: " + inst.exec_unit.Qj)
 
         if inst.op != 'Addi' and inst.op != 'Lw': # Add, Sub, Mul, Beq, Ble, Bne, Sw also need rt
             if self.registers.is_ready(inst.rt):
                 inst.exec_unit.Vk = self.registers.get_value(inst.rt) # Put register value at Vk
             else:
                 inst.exec_unit.Qk = self.registers.get_value(inst.rt) # Waiting for dependencies
+                print("Qk: " + inst.exec_unit.Qk + "\n\n\n\n\n\n\n")
         else:
             inst.exec_unit.Vk = inst.immediate
     
@@ -139,6 +141,7 @@ class Tomasulo:
             if inst.exec_unit.name == self.registers.get_value(inst.rd): # JUST write if rd is waiting for this op
                 self.registers.set_param(inst.rd, result, True) # write value to rd
             self.reservation.bypass(inst.exec_unit.name, result) # Bypass the result 
+            inst.exec_unit.A = result
 
     def solve_itype(self, inst):        
         if inst.op == 'Beq':
@@ -162,6 +165,7 @@ class Tomasulo:
             if inst.exec_unit.name == self.registers.get_value(inst.rt): # JUST write if rt is waiting for this op
                 self.registers.set_param(inst.rt, result, True) # Write value to register
             self.reservation.bypass(inst.exec_unit.name, result) # Bypass the result 
+            inst.exec_unit.A = result
         else:
             raise Exception("Unknown itype op: *" + inst.op + '*')
 

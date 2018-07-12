@@ -22,5 +22,5 @@ class Instruction_Set:
         status = []
         for i in self.all:
             status.append(i.get_status())
-        return status
+        return [self.program_counter, status]
 
