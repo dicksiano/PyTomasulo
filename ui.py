@@ -116,15 +116,30 @@ class App(QWidget):
             if inst_info[i][1]:
                 self.InstructionStatusTable.setItem(i, 1, QTableWidgetItem(' '))
                 self.InstructionStatusTable.item(i, 1).setBackground(QColor(0,150,0))
+            else:
+                self.InstructionStatusTable.setItem(i, 1, QTableWidgetItem(' '))
+                self.InstructionStatusTable.item(i, 1).setBackground(QColor(255,255,255))
+
             if inst_info[i][2]:
                 self.InstructionStatusTable.setItem(i, 2, QTableWidgetItem(' '))
                 self.InstructionStatusTable.item(i, 2).setBackground(QColor(0,150,0))
+            else:
+                self.InstructionStatusTable.setItem(i, 2, QTableWidgetItem(' '))
+                self.InstructionStatusTable.item(i, 2).setBackground(QColor(255,255,255))
+
             if inst_info[i][3]:
                 self.InstructionStatusTable.setItem(i, 3, QTableWidgetItem(' '))
                 self.InstructionStatusTable.item(i, 3).setBackground(QColor(0,150,0))
+            else:
+                self.InstructionStatusTable.setItem(i, 3, QTableWidgetItem(' '))
+                self.InstructionStatusTable.item(i, 3).setBackground(QColor(255,255,255))
+
             if inst_info[i][4]:
                 self.InstructionStatusTable.setItem(i, 4, QTableWidgetItem(' '))
                 self.InstructionStatusTable.item(i, 4).setBackground(QColor(0,150,0))
+            else:
+                self.InstructionStatusTable.setItem(i, 4, QTableWidgetItem(' '))
+                self.InstructionStatusTable.item(i, 4).setBackground(QColor(255,255,255))
 
     def updateReservationStatusTable(self, reserv_info):
         for i in range(0, len(reserv_info)):
