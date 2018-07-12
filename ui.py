@@ -32,6 +32,7 @@ class App(QWidget):
         self.createFirstRegisterStatusTable()
         self.createSecondRegisterStatusTable()
         self.createPlayButton()
+        self.createForwardButton()
 
         # Add box layout, add tables to box layout and add box layout to widget
         self.layout = QVBoxLayout()
@@ -55,6 +56,7 @@ class App(QWidget):
         self.layout.addWidget(self.FirstRegisterStatusTable)
         self.layout.addWidget(self.SecondRegisterStatusTable)
         self.layout.addWidget(self.playButton)
+        self.layout.addWidget(self.forwardButton)
         self.setLayout(self.layout) 
         # Show widget
         self.show()
@@ -67,7 +69,7 @@ class App(QWidget):
             return fileName
 
     def createPlayButton(self):
-        self.playButton = QPushButton('Play', self)
+        self.playButton = QPushButton(' ', self)
         self.playButton.setToolTip('Next step of the algorithm execution')
         self.playButton.move(200,70) 
         icon = QIcon("play.png")
@@ -77,6 +79,25 @@ class App(QWidget):
     @pyqtSlot()
     def on_click(self):
         self.presenter.update()
+        [cycle, issued_inst, inst_info,reserv_info,reg_info]  = self.presenter.get_status()
+        self.l1.setText("Reservation Station - Cycle " + str(cycle) + " - Issued " + str(issued_inst))
+        self.updateInstructionStatusTable(inst_info)
+        self.updateReservationStatusTable(reserv_info)
+        self.updateFirstRegisterStatusTable(reg_info)
+        self.updateSecondRegisterStatusTable(reg_info)
+
+    def createForwardButton(self):
+        self.forwardButton = QPushButton(' ', self)
+        self.forwardButton.setToolTip('End if algorithm execution')
+        self.forwardButton.move(200,70) 
+        icon = QIcon("forward.png")
+        self.forwardButton.setIcon(icon)
+        self.forwardButton.clicked.connect(self.on_click_forward)
+
+    @pyqtSlot()
+    def on_click_forward(self):
+        for i in range(0,1000):
+            self.presenter.update()
         [cycle, issued_inst, inst_info,reserv_info,reg_info]  = self.presenter.get_status()
         self.l1.setText("Reservation Station - Cycle " + str(cycle) + " - Issued " + str(issued_inst))
         self.updateInstructionStatusTable(inst_info)
@@ -222,7 +243,7 @@ class App(QWidget):
         self.InstructionStatusTable = QTableWidget()
         self.InstructionStatusTable.setRowCount(300)
         self.InstructionStatusTable.setColumnCount(5)
-        self.InstructionStatusTable.setFixedSize(627,235)
+        self.InstructionStatusTable.setFixedSize(627,225)
 
         self.InstructionStatusTable.setColumnWidth(0, 180)
         self.InstructionStatusTable.setColumnWidth(1, 100)

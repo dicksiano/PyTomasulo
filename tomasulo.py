@@ -53,7 +53,7 @@ class Tomasulo:
             if i.get_state() == 'issue':
                 if i.is_ready_to_exec(): # Dependencies have finished their execution
                     i.execute() 
-                    
+
                     if i.unit_type == 'Add' and self.is_add_ready:
                         self.is_add_ready = False
                     if i.unit_type == 'Mul' and self.is_mult_ready:
@@ -147,7 +147,6 @@ class Tomasulo:
         if inst.op == 'Beq':
             self.is_waiting_branch = False # Finish of branch op
             if inst.exec_unit.Vj == inst.exec_unit.Vk:
-                print(self.instruction_set.program_counter)
                 self.instruction_set.update_PC(1 + inst.immediate)
         elif inst.op == 'Ble':
             self.is_waiting_branch = False # Finish of branch op

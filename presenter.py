@@ -13,8 +13,7 @@ class Presenter:
         self.tomasulo_impl = tomasulo.Tomasulo(inst_set)
 
     def update(self):
-        for i in range(0,1000):
-            self.tomasulo_impl.update()
+        self.tomasulo_impl.update()
         #self.tomasulo_impl.render()
     
     def get_status(self):
