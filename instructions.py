@@ -28,12 +28,21 @@ class Instruction:
 
 	def write(self):
 		self.state = 'write'
+	
+	def finalize(self):
+		self.state = 'finalized'
 		
 	def get_state(self):
 		return self.state
 
 	def get_type(self):
 		return self.type
+
+	def is_waiting_dependencies(self):
+		return self.exec_unit.Qj != 'none' or self.exec_unit.Qk != 'none'
+
+	def is_ready_to_exec(self):
+		return self.exec_unit.Vj != 'none' and self.exec_unit.Vk != 'none'
 
 	def print_status(self):
 		print("%20s" %self.name + ' ' + "%6s" %str(self.state == 'issue') + ' ' + "%6s" %str(self.state == 'exec') + ' ' + "%6s" %str(self.state == 'write'))
@@ -63,13 +72,14 @@ class IType_Instruction(Instruction):
 		self.rs = rs
 		self.rt = rt
 		self.immediate = int(immediate)
-		self.name = op + ' ' + rt + ' <- ' + rs + ',' + immediate
 
 		# Lw,Sw takes 4 cycle to execute and Addi/Beq/Ble/Bne takes 1
 		if op == 'Lw' or op == 'Sw':
 			self.cycles_execute = 4 
+			self.name = op + ' ' + rt + ',' + rs + '(' + immediate + ')'
 		else:
 			self.cycles_execute = 1
+			self.name = op + ' ' + rt + ' <- ' + rs + ',' + immediate
 
 class JType_Instruction(Instruction):
 	def __init__(self, opcode,target_adress):

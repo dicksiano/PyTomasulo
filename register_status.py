@@ -2,9 +2,6 @@ class Register:
     def __init__(self, value, ready):
         self.value = value
         self.ready = ready
-    
-    def is_ready(self):
-        return self.ready
 
 class Register_Status:
     def __init__(self):

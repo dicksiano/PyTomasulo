@@ -7,8 +7,8 @@ class Memomy_Model:
         for i in range(0, 4000):
             self.memory.append(i*0)
         
-    def get(self, adress):
+    def load_from_memory(self, adress):
         return self.memory[int(adress)]
 
-    def set(self, adress, value):
+    def store_in_memory(self, adress, value):
         self.memory[int(adress)] = value

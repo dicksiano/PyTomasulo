@@ -4,6 +4,12 @@
 class Execution_Unit:
     def __init__(self, name):
         self.name = name
+        self.clear()
+
+    def is_busy(self):
+        return self.is_busy
+
+    def clear(self):
         self.Busy = False
         self.Op = 'none'
         self.Vj = 'none'
@@ -11,24 +17,19 @@ class Execution_Unit:
         self.Qj = 'none'
         self.Qk = 'none'
         self.A = 'none'
-        self.Result = 'none'
 
-    def is_busy(self):
-        return self.is_busy
-
-    def get_all(self):
-        return [self.name, 
-                self.Busy, 
-                self.Op, 
-                self.Vj, 
-                self.Vk, 
-                self.Qj, 
-                self.Qk, 
-                self.A, 
-                self.Result]
+    def bypass(self, dependency, result):
+        if self.name != dependency:
+            if self.Qj == dependency:
+                self.Qj = 'none'
+                self.Vj = result
+            
+            if self.Qk == dependency:
+                self.Qk = 'none'
+                self.Vk = result
 
     def print_status(self):
-        print("%7s: " %self.name + "%6s" %self.Busy + ' ' + "%20s" %self.Op + ' ' + "%6s" %self.Vj + ' ' + "%6s" %self.Vk + ' ' + "%6s" %self.Qj + ' ' + "%6s" %self.Qk + ' ' + "%6s" %self.A + ' ' + "%6s" %self.Result)
+        print("%7s: " %self.name + "%6s" %self.Busy + ' ' + "%20s" %self.Op + ' ' + "%6s" %self.Vj + ' ' + "%6s" %self.Vk + ' ' + "%6s" %self.Qj + ' ' + "%6s" %self.Qk + ' ' + "%6s" %self.A)
 
 class Reservation_Status:
     def __init__(self):
@@ -39,15 +40,6 @@ class Reservation_Status:
         self.add2 = Execution_Unit("add2")
         self.mult0 = Execution_Unit("mult0")
         self.mult1 = Execution_Unit("mult1")
-
-    def print_status(self):
-        self.load0.print_status()
-        self.load1.print_status()
-        self.add0.print_status()
-        self.add1.print_status()
-        self.add2.print_status()
-        self.mult0.print_status()
-        self.mult1.print_status()
 
     def is_unit_available(self, type):
         if type == 'Add':
@@ -89,4 +81,22 @@ class Reservation_Status:
 
     def is_mul_available(self):
         return ((not self.mult0.Busy) or (not self.mult1.Busy))
+
+    def print_status(self):
+        self.load0.print_status()
+        self.load1.print_status()
+        self.add0.print_status()
+        self.add1.print_status()
+        self.add2.print_status()
+        self.mult0.print_status()
+        self.mult1.print_status()
+
+    def bypass(self, dependency, result):
+        self.load0.bypass(dependency, result)
+        self.load1.bypass(dependency, result)
+        self.add0.bypass(dependency, result)
+        self.add1.bypass(dependency, result)
+        self.add2.bypass(dependency, result)
+        self.mult0.bypass(dependency, result)
+        self.mult1.bypass(dependency, result)
 
