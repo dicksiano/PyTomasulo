@@ -8,7 +8,7 @@ class Register_Status:
         self.reg = {}
         for i in range(0,32):
             self.reg['R' + str(i)] = Register(0, True)
-        self.reg['R1'].value = 3
+        self.reg['R1'].value = 10
 
     def get_status(self):
         status = []

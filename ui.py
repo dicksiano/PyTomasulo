@@ -125,7 +125,7 @@ class App(QWidget):
 
     def updateInstructionStatusTable(self, info):
         [program_counter, inst_info] = [info[0], info[1]]
-
+        
         for i in range(0,300):
         #PC
             if i == program_counter:
@@ -137,6 +137,10 @@ class App(QWidget):
 
         for i in range(0, len(inst_info)):
             self.InstructionStatusTable.setItem(i, 0, QTableWidgetItem(str(inst_info[i][0])))
+            if i == program_counter:
+                self.InstructionStatusTable.item(i, 0).setBackground(QColor(0,0,250))
+            else:
+                self.InstructionStatusTable.item(i, 0).setBackground(QColor(255,255,255))
 
             if inst_info[i][1]:
                 self.InstructionStatusTable.setItem(i, 1, QTableWidgetItem(' '))

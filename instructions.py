@@ -8,6 +8,7 @@ class Instruction:
 		self.type = 'none'
 		self.exec_unit = 'none'
 		self.cycles_execute = 0
+		self.op = op
 
 		if op in ['Add', 'Sub', 'Addi', 'Beq', 'Ble', 'Bne', 'Jmp']:
 			self.unit_type = 'Add'
@@ -37,6 +38,9 @@ class Instruction:
 
 	def get_type(self):
 		return self.type
+
+	def should_write(self):
+		return self.op in ['Add', 'Mul', 'Sub', 'Addi', 'Lw']
 
 	def is_ready_to_exec(self):
 		return self.exec_unit.Vj != 'none' and self.exec_unit.Vk != 'none'

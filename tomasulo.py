@@ -68,24 +68,26 @@ class Tomasulo:
     def write(self):
         for i in self.instruction_set.all:
             if i.get_state() == 'write':
+                self.is_CDB_ready = True
                 i.exec_unit.clear() # Free exec unit to others instructions be processed
                 i.finalize()
             elif i.get_state() == 'exec' and i.cycles_execute <= 0:
-                i.write()
+                if self.is_CDB_ready or i.should_write():
+                    i.write()
 
-                if i.unit_type == 'Add':
+                    if i.unit_type == 'Add':
                         self.is_add_ready = True
-                elif i.unit_type == 'Mul':
+                    elif i.unit_type == 'Mul':
                         self.is_mult_ready = True
-                elif i.unit_type == 'Mem':
+                    elif i.unit_type == 'Mem':
                         self.is_mem_ready = True
 
-                if i.type == 'rtype':
-                    self.solve_rtype(i)
-                elif i.type == 'itype':
-                    self.solve_itype(i)
-                elif i.type == 'jtype':
-                    self.solve_jtype(i)
+                    if i.type == 'rtype':
+                        self.solve_rtype(i)
+                    elif i.type == 'itype':
+                        self.solve_itype(i)
+                    elif i.type == 'jtype':
+                        self.solve_jtype(i)
 
     def setup_exec(self, inst):        
         if inst.op == 'nop' or inst.type == 'jtype':
