@@ -9,7 +9,7 @@ class Instruction_Set:
         return self.all[self.program_counter]
 
     def update_PC(self, offset=1):
-        self.program_counter += offset
+        self.program_counter += int(offset)
 
     def print_status(self):
         for i in self.all:
