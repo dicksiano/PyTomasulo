@@ -10,7 +10,7 @@ class Tomasulo:
         self.registers = register_status.Register_Status()
         self.memory = memory_model.Memomy_Model()
         self.cycle = 0
-
+        self.issued_instructions = 0
         # Only 1 type of operation per time:
         self.is_add_ready = True
         self.is_mult_ready = True
@@ -35,7 +35,7 @@ class Tomasulo:
 
             if self.reservation.is_unit_available(current_inst.unit_type): # Check if there is execution unit available
                 self.instruction_set.update_PC() # PC = PC + 1. Only updates PC if there is an available exec unit         
-
+                self.issued_instructions += 1
                 exec_unit = self.reservation.get_exec_unit(current_inst.unit_type) # Get the available exec unit
                 current_inst.issue(exec_unit) # Instruction receive status 'issue' 
                 exec_unit.Busy = True # Exec unit will be busy until process this instruction

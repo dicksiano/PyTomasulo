@@ -56,7 +56,7 @@ class RType_Instruction(Instruction):
 		self.rs = rs
 		self.rt = rt
 		self.rd = rd
-		self.name = op + ' ' + rd + ' <- ' + rs + ',' + rt
+		self.name = op + ' ' + rd + ',' + rs + ',' + rt
 
 		# Mul takes 3 cycle to execute and Add/Sub/Nop takes 1
 		if op == 'Mul':
@@ -79,7 +79,7 @@ class IType_Instruction(Instruction):
 			self.name = op + ' ' + rt + ',' + rs + '(' + immediate + ')'
 		else:
 			self.cycles_execute = 1
-			self.name = op + ' ' + rt + ' <- ' + rs + ',' + immediate
+			self.name = op + ' ' + rt + ',' + rs + ',' + immediate
 
 class JType_Instruction(Instruction):
 	def __init__(self, opcode,target_adress):
