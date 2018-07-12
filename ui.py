@@ -90,11 +90,11 @@ class App(QWidget):
         self.ReservationStatusTable.setHorizontalHeaderLabels(["Name", "Busy", "Op", "Vj", "Vk", "Qj", "Qk", "A"])
 
         # Set execution unit names
-        self.ReservationStatusTable.setItem(0,0, QTableWidgetItem("add0"))
-        self.ReservationStatusTable.setItem(1,0, QTableWidgetItem("add1"))
-        self.ReservationStatusTable.setItem(2,0, QTableWidgetItem("load0"))
-        self.ReservationStatusTable.setItem(3,0, QTableWidgetItem("load1"))
-        self.ReservationStatusTable.setItem(4,0, QTableWidgetItem("load2"))
+        self.ReservationStatusTable.setItem(0,0, QTableWidgetItem("load0"))
+        self.ReservationStatusTable.setItem(1,0, QTableWidgetItem("load1"))
+        self.ReservationStatusTable.setItem(2,0, QTableWidgetItem("add0"))
+        self.ReservationStatusTable.setItem(3,0, QTableWidgetItem("add1"))
+        self.ReservationStatusTable.setItem(4,0, QTableWidgetItem("add2"))
         self.ReservationStatusTable.setItem(5,0, QTableWidgetItem("mult0"))
         self.ReservationStatusTable.setItem(6,0, QTableWidgetItem("mult1"))
 
@@ -108,7 +108,7 @@ class App(QWidget):
         self.InstructionStatusTable.setColumnCount(5)
 
         # Set headings
-        self.InstructionStatusTable.setHorizontalHeaderLabels(["Op", "Write", "Execute", "Write", "Finalized"])
+        self.InstructionStatusTable.setHorizontalHeaderLabels(["Op", "Issue", "Execute", "Write", "Finalized"])
 
         # Set position
         self.InstructionStatusTable.move(310,0) 

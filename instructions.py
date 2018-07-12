@@ -38,9 +38,6 @@ class Instruction:
 	def get_type(self):
 		return self.type
 
-	def is_waiting_dependencies(self):
-		return self.exec_unit.Qj != 'none' or self.exec_unit.Qk != 'none'
-
 	def is_ready_to_exec(self):
 		return self.exec_unit.Vj != 'none' and self.exec_unit.Vk != 'none'
 
